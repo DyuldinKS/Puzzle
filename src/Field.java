@@ -247,7 +247,7 @@ public class Field extends JPanel implements Observer{
 	}
 	
 	private void displayNumber(Dice dice) {
-		if(dice.value > 0) {
+		if(dice != emptyCell) {
 			dice.setIcon(null);
 			dice.setColor(null);
 			dice.setText( Integer.toString(dice.value) );
