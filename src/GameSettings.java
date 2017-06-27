@@ -1,24 +1,19 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.List;
-import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JMenuItem;
 
 public class GameSettings implements Observable {
 	
@@ -32,7 +27,7 @@ public class GameSettings implements Observable {
 	protected ArrayList<Color> colors;
 	protected String gameMode;
 	protected Color defaultColor;
-	protected final String paintIconPath = "./src/images/icon.png";
+	protected java.net.URL paintIconPath;
 //	protected static enum GameMode { IMAGE, NUMBERS };
 //	public static enum ActionType { CHANGE_GAME_MODE, NEW_GAME, EXIT_GAME };
 	
@@ -44,9 +39,10 @@ public class GameSettings implements Observable {
 		observers = new ArrayList();
 		gameMode = "NUMBERS";
 		defaultColor = new Color(240, 240, 240);
+		paintIconPath = getClass().getResource("/images/icon.png");
 		
-		colors = getColors("./src/colors.txt");
-		imageChunks = getImageChunks("./src/images/test.jpg");
+		colors = getColors( getClass().getResourceAsStream("/colors.txt") );
+		imageChunks = getImageChunks( getClass().getResourceAsStream("/images/test.jpg") );
 		
 	}
 	
@@ -94,9 +90,9 @@ public class GameSettings implements Observable {
 	}
 	
 	
-	private ArrayList<ImageIcon> getImageChunks(String fileName) {
+	private ArrayList<ImageIcon> getImageChunks(InputStream is) {
 		try {
-			img = ImageIO.read( new File(fileName) );
+			img = ImageIO.read(is);
 			img = scaleImage(img);
 			return splitImage(img);
 		} catch (IOException e) {
@@ -138,16 +134,15 @@ public class GameSettings implements Observable {
 				icons.add( new ImageIcon(chunk) );
 			}
 		}
-		System.out.println("Splitting done");
 		return icons;
 	}
 	
 	
-	private ArrayList<Color> getColors(String fileName) {
+	private ArrayList<Color> getColors(InputStream stream) {
 		
 		ArrayList<Color> colors;
-		try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
-			colors = (ArrayList<Color>) stream
+		try ( BufferedReader reader = new BufferedReader(new InputStreamReader(stream)) ) {
+			colors = (ArrayList<Color>) reader.lines()
 					.map(this::parseStringToColor)
 					.collect(Collectors.toList());
 		} catch (IOException e) {

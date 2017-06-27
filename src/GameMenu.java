@@ -51,5 +51,4 @@ public class GameMenu extends JMenuBar implements Observer {
 		
 	}
 	
-	
 }

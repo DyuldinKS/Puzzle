@@ -21,7 +21,7 @@ public class GameFrame extends JFrame implements Observer{
 		settings.addObserver(this);
 		setSize(settings.frameSize);
 		setLocationRelativeTo(null);  // *** this will center your app ***
-		setIconImage((new ImageIcon(settings.paintIconPath)).getImage());
+		setIconImage(new ImageIcon(settings.paintIconPath).getImage());
         
 		aboutDialog = new AboutDialog(this);
 		aboutDialog.setLocationRelativeTo(null);
