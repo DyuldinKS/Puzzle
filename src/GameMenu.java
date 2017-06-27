@@ -1,5 +1,4 @@
 import java.awt.event.ActionListener;
-
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -14,6 +13,7 @@ public class GameMenu extends JMenuBar implements Observer {
 		settings.addObserver(this);
 		add( createGameMenu() );
 		add( createSettingsMenu() );
+		add( createHelpMenu() );
 	}
 	
 	
@@ -38,11 +38,18 @@ public class GameMenu extends JMenuBar implements Observer {
 		opts.add( createJMenuItem("Numbers", e -> settings.setGameMode("NUMBERS")) );
 		return opts;
 	}
+	
+	private JMenu createHelpMenu() {
+		JMenu help = new JMenu("Help");
+		help.add( createJMenuItem("About", e -> settings.showDialog()));
+		return help;
+	}
 
 
 	public void update(String action) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	
 }

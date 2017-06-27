@@ -32,6 +32,7 @@ public class GameSettings implements Observable {
 	protected ArrayList<Color> colors;
 	protected String gameMode;
 	protected Color defaultColor;
+	protected final String paintIconPath = "./src/images/icon.png";
 //	protected static enum GameMode { IMAGE, NUMBERS };
 //	public static enum ActionType { CHANGE_GAME_MODE, NEW_GAME, EXIT_GAME };
 	
@@ -85,6 +86,11 @@ public class GameSettings implements Observable {
 	
 	protected void restart() {
 		notifyObservers("RESTART");
+	}
+	
+	
+	protected void showDialog() {
+		notifyObservers("SHOW_ABOUT");
 	}
 	
 	
